@@ -1,0 +1,7 @@
+<label for="country" class="sr-only">Country</label>
+  <select name="countryName" [value]="countryName" [(ngModel)]="countryName" class="form-control" id="inputCountry" (change)="onChangeCountry($event.target.value)" required>
+        <option disabled>select any one country</option>
+        <option *ngFor="let country of countries" [value]="country.code">{{country.name
+          | uppercase}}</option>
+      </select>
+   

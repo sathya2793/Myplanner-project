@@ -1,0 +1,81 @@
+<app-nav-bar (messageEvent)="recieveMessage($event)"></app-nav-bar>
+<div class="page-conent top" [ngStyle]="{ 'margin-left' : (showSidebar==true) ? '260px' : '0px'}">
+  <!--View Content-->
+  <ng-template #viewContent let-close="close">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title">Schedule Details</h5>
+      <button type="button" class="close text-white" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-dark text-white">
+      <table class="table table-borderless table-responsive">
+        <tbody>
+          <tr>
+            <td>Event Name</td>
+            <td>{{ modalData?.event.title | uppercase}}</td>
+          </tr>
+          <tr>
+            <td>Date & Timing</td>
+            <td>{{ modalData?.event.start | date: 'short'}} - {{ modalData?.event.end| date: 'short'}}</td>
+          </tr>
+          <tr>
+            <td>Venue</td>
+            <td>{{ modalData?.event.venue | uppercase}}</td>
+          </tr>
+          <tr>
+            <td>Purpose Description</td>
+            <td>{{ modalData?.event.description}}</td>
+          </tr>
+          <tr>
+            <td>Assigned By</td>
+            <td>{{ modalData?.event.adminName | uppercase}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer bg-dark text-white">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+    </div>
+  </ng-template>
+  <!--End View Content-->
+  <!--Notify Content-->
+  <ng-template #notifyContent let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Meeting Reminder</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h6 class="card-title">Your meeting <span><i> {{modalData?.event.title}} </i></span> will start soon!</h6>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success" (click)="close();snooze=true">Snooze</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="close();modalData?.event.status='Dismiss'">Dismiss</button>
+    </div>
+  </ng-template>
+  <!--End Notify Content-->
+  <br>
+  <!-- calendar-header-->
+  <mwl-demo-utils-calendar-header [(view)]="view" [(viewDate)]="viewDate">
+  </mwl-demo-utils-calendar-header>
+  <!-- End calendar-header-->
+
+  <!--view switch-->
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-day-view>
+  </div>
+  <!--End view switch-->
+</div>

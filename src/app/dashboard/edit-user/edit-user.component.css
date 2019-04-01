@@ -1,0 +1,28 @@
+.page-conent{
+    bottom: 0;
+    min-height: 100vh;
+  }
+
+  .flexContainer {
+    display: flex;
+}
+
+.inputField {
+    flex: 1;
+}
+
+
+    label{
+        color:#fff
+    }
+
+    @media screen and (max-width: 640px)
+{
+.page-conent{
+  margin-left: 0px !important;
+}
+}
+
+input{
+  overflow: hidden;
+}

@@ -1,0 +1,104 @@
+<aside id="mySidenav" class="sidenav" style="background-image: url(https://s3.ap-south-1.amazonaws.com/portfolio-cloud/assets/images/bg_2.png);" *ngIf="showSidebar" [ngStyle]="{ 'width' : (showSidebar==false) ? '0px': '260px'  }">
+  <nav id="sidebar" class="sidebar ">
+    <div class="sidebar-content">
+      <div class="sidebar-brand">
+        <a (click)="changedTitle('My Dashboard')" routerLink="/user" class="font-weight-bold text-white d-flex flex-grow-1 bd-highlight">Meeting Planner</a>
+        <div id="close-sidebar" (click)="toggle()" style="cursor: pointer;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x text-white">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+      </div>
+
+
+      <!-- sidebar-brand  -->
+      <div class="sidebar-header p-3 border border-dark" style="background-image: url(https://s3.ap-south-1.amazonaws.com/portfolio-cloud/assets/images/bg_3.png);">
+        <div class="user-info text-center text-white">
+          <span>WELCOME {{userName | uppercase}} </span>
+          <span>
+            <a class=" mt-2 btn btn-danger" (click)="logout()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Logout </a>
+          </span>
+        </div>
+      </div>
+      <!-- sidebar-header  -->
+      <div class="sidebar-menu">
+        <ul class="nav text-left" id="myTab" role="tablist">
+          <li class="nav-item" *ngIf="checkAdmin">
+            <a class="nav-link text-white" (click)="changedTitle('My Dashboard')" routerLink="/admin"  routerLinkActive="active-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home mr-3">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span>My Dashboard</span></a>
+          </li>
+          <li class="nav-item" *ngIf="!checkAdmin">
+            <a class="nav-link text-white" (click)="changedTitle('My Dashboard')" routerLink="/user"  routerLinkActive="active-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home mr-3">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span>My Dashboard</span></a>
+          </li>
+          <li class="header-menu p-2 ml-2">
+            <span>General</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" (click)="changedTitle('Profile')" routerLink="/edit-user"  routerLinkActive="active-link" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user mr-3">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Profile</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white"  (click)="changedTitle('Change Password')" routerLink="/change-password"  routerLinkActive="active-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield mr-3">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span>Change Password</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="mailto:sathyainfotechpro.care@gmail.com"  routerLinkActive="active" target="_top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail mr-3">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <span>Contact Support</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- sidebar-menu  -->
+    </div>
+    <!-- sidebar-content  -->
+  </nav>
+</aside>
+<!-- sidebar-wrapper  -->
+
+<nav id="topNav" class="navbar fixed-top  border border-white d-flex justify-content-start" style="background-image: url(https://s3.ap-south-1.amazonaws.com/portfolio-cloud/assets/images/bg_2.png);" [ngStyle]="{ 'margin-left' : (showSidebar==true) ? '260px' : '0px' }">
+    <a id="show-sidebar" class="btn btn-sm btn-success"  *ngIf="!showSidebar" (click)="toggle()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu text-white ">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </a>
+    <a class="navbar-brand font-weight-bold text-white mx-3  d-flex flex-grow-1 bd-highlight">{{title}} </a>
+  </nav>

@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row ">
+    <div class="col-md-12  d-flex justify-content-center">
+      <!-- form card login -->
+      <div class="card bg-dark p-3 mx-auto top" style="width:25rem;">
+        <div class="panel-body">
+          <div class="text-center text-white">
+            <h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-unlock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg></h3>
+            <h2 class="text-center">Verify Your Email</h2>
+            <p class="small">Enter your Secret Token sented to your Email</p>
+            <form #verifyForm="ngForm" novalidate>
+            <div class="form-group px-3">
+              <div class="input-group">
+                <input type="text" name=token class="form-control input-lg" [(ngModel)]="secretToken" placeholder="Secret Token"
+                  required autofocus #token="ngModel" minlength="6" maxlength="6">
+              </div>
+            </div>
+            <div class="alert alert-danger mx-2"  *ngIf="token.invalid && (token.dirty || token.touched)">
+              <li> <span *ngIf="token.errors.required">Secret Token is required.</span></li>
+              <li> <span *ngIf="!token.errors.required && token.errors.minlength ">Secret Token is not validate.</span></li>
+           </div>
+            <div class="form-group px-3">
+              <button type="submit" class="btn btn-success btn-block" [disabled]="!verifyForm.form.valid" (click)="sendVerifyLink()">Verfiy</button>
+            </div>
+            <div class="text-center text-white mt-3 p-3">Go to Home page <a style="text-decoration: underline;color:#5cb85c;cursor: pointer;"
+               (click)="goToSignIn()">Sign In</a></div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,503 @@
+<app-nav-bar (messageEvent)="recieveMessage($event)"></app-nav-bar>
+<div class="page-conent top text-white" [ngStyle]="{ 'margin-left' : (showSidebar==true) ? '260px' : '0px'}">
+  <br>
+  <!--Create Button-->
+  <div class="text-center">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal" title="Add New Schedule Meeting">
+        <a>Create Schedule Meeting</a>
+      </button>
+    </div>
+  </div>
+  <!--End Create Button-->
+  <br>
+
+  <!--Add Modal -->
+  <div id="addModal" class="modal fade boarder" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-dark">
+          <h4 class="modal-title text-white">Create a New Schedule Meeting</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="AddScheduleForm.reset();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x text-white">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body bg-dark">
+          <form #AddScheduleForm="ngForm" novalidate>
+            <table class="table table-borderless table-responsive">
+              <tbody>
+                <tr>
+                  <td><label class="text-monospace text-white">
+                      Event Name:
+                    </label></td>
+                  <td> <input [(ngModel)]="eventName" autofocus #event="ngModel"
+                      minlength="4" autocomplete="off" name="eventName" class="form-control" placeholder="Enter The Event Name"
+                      type="text" required />
+
+                    <div [hidden]="event.pristine || event.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="event.errors?.minlength">
+                          * Event Name should contain minimum 4 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="event.errors?.required">
+                          * Event Name is required!
+                        </span>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Start:
+                    </label></td>
+                  <td> <input [(ngModel)]="start" #startDate="ngModel" class="form-control" [owlDateTimeTrigger]="dt1"
+                      name="start" autocomplete="off" [owlDateTime]="dt1" placeholder="7/23/2017, 12:00 PM" required>
+                    <owl-date-time [pickerMode]="'dialog'" #dt1></owl-date-time>
+
+                    <div [hidden]="startDate.pristine || startDate.valid" *ngIf="startDate.errors?.required" class="alert alert-danger m-1">
+                      * Start Date/Time is required!
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      End:
+                    </label></td>
+                  <td> <input [(ngModel)]="end" #endDate="ngModel" class="form-control" name="end" [owlDateTimeTrigger]="dt2"
+                      autocomplete="off" [owlDateTime]="dt2" placeholder="7/23/2017, 12:30 PM" required>
+                    <owl-date-time [pickerMode]="'dialog'" #dt2></owl-date-time>
+
+                    <div [hidden]="endDate.pristine || endDate.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="endDate.errors?.required">
+                          * End Date/Time is required!
+                        </span>
+                      </li>
+                    </div>
+                    <div *ngIf="compareDates(start,end)" class="alert alert-danger m-1">
+                      * End Date/Time cannot be before Start Date/Time.
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Venue:
+                    </label></td>
+                  <td> <input [(ngModel)]="venue" name="venue" #v="ngModel" minlength="4"
+                      autocomplete="off" class="form-control" placeholder="Enter the Venue Place" type="text" required />
+                    <div [hidden]="v.pristine || v.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="v.errors?.minlength">
+                          * Venue should contain minimum 4 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="v.errors?.required">
+                          * Venue is required!
+                        </span>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Purpose Description:
+                    </label></td>
+                  <td> <textarea [(ngModel)]="description" autocomplete="off" name="description" class="form-control"
+                      placeholder="Enter The Purpose Description" #desc="ngModel"
+                      minlength="4" maxlength="100" type="text" required>
+                                  </textarea>
+                    <div [hidden]="desc.pristine || desc.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="desc.errors?.minlength">
+                          * Description should contain minimum 4 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="desc.errors?.maxlength">
+                          * Description should contain maximum 100 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="desc.errors?.required">
+                          * Description is required!
+                        </span>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Participants:
+                    </label></td>
+                  <td>
+                    <select [(ngModel)]="participate" name="participate" id="participate" class="form-control">
+                      <option *ngFor="let user of allUserList" [value]="user.userId+','+user.name">{{user.name}}</option>
+                    </select></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="modal-footer bg-dark">
+              <button class="btn btn-md text-white bg-danger" (click)="AddScheduleForm.reset();"
+                data-dismiss="modal">Cancel</button>
+              <button class="btn btn-md text-white bg-success" type="submit" (click)="createNewScheduleMeeting(AddScheduleForm)"
+                data-dismiss="modal" [disabled]="!AddScheduleForm.form.valid">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End Add Modal -->
+
+  <!-- View Content-->
+  <ng-template #viewContent let-close="close">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title">Schedule Details</h5>
+      <button type="button" class="close  text-white" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-dark  text-white">
+      <table class="table table-borderless table-responsive">
+        <tbody>
+          <tr>
+            <td>Event Name</td>
+            <td>{{ modalData?.event.title | uppercase}}</td>
+          </tr>
+          <tr>
+            <td>Date & Timing</td>
+            <td>{{ modalData?.event.start | date: 'short'}} - {{ modalData?.event.end| date: 'short'}}</td>
+          </tr>
+          <tr>
+            <td>Venue</td>
+            <td>{{ modalData?.event.venue | titlecase}}</td>
+          </tr>
+          <tr>
+            <td>Purpose Description</td>
+            <td>{{ modalData?.event.description | titlecase}}</td>
+          </tr>
+          <tr>
+            <td>Assigned To</td>
+            <td>{{ modalData?.event.participateName | uppercase}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer bg-dark">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+    </div>
+  </ng-template>
+  <!--End View Content-->
+
+  <!-- Edit Content-->
+  <ng-template #editContent let-close="close">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title">Edit Schedule Details</h5>
+      <button type="button" class="close text-white" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-dark">
+      <form #EditScheduleForm="ngForm" novalidate>
+        <div class="modal-body">
+          <div class="form-group">
+            <table class="table table-borderless table-responsive">
+              <tbody>
+                <tr>
+                  <td><label class="text-monospace text-white">
+                      Event Name:
+                    </label></td>
+                  <td>
+                    <input name="eventName" autocomplete="off" #event="ngModel" minlength="4"
+                      class="form-control form-control1" [(ngModel)]="editEventName" type="text" required />
+
+                    <div [hidden]="event.pristine || event.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="event.errors?.minlength">
+                          * Event Name should contain minimum 4 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="event.errors?.required">
+                          * Event Name is required!
+                        </span>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Start Date/Time:
+                    </label></td>
+                  <td><input name="start" autocomplete="off" #start="ngModel" class="form-control form-control1"
+                      [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" [(ngModel)]="editStart" required>
+                    <owl-date-time [pickerMode]="'dialog'" #dt3></owl-date-time>
+
+                    <div [hidden]="start.pristine || start.valid" *ngIf="start.errors?.required" class="alert alert-danger m-1">
+                      * Start Date/Time is required!
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      End Date/Time:
+                    </label></td>
+                  <td><input name="end" autocomplete="off" #end="ngModel" class="form-control form-control1"
+                      [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4" [(ngModel)]="editEnd" required>
+                    <owl-date-time [pickerMode]="'dialog'" #dt4></owl-date-time>
+
+                    <div [hidden]="end.pristine || end.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="end.errors?.required">
+                          * End Date/Time is required!
+                        </span>
+                      </li>
+                    </div>
+                    <div *ngIf="compareDates(editStart,editEnd)" class="alert alert-danger m-1">
+                      * End Date/Time cannot be before Start Date/Time.
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Venue:
+                    </label></td>
+                  <td> <input name="venue" autocomplete="off" class="form-control form-control1" #venue="ngModel"
+                      minlength="4" placeholder="Enter the Venue Place" type="text"
+                      [(ngModel)]="editVenue" required>
+
+                    <div [hidden]="venue.pristine || venue.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="venue.errors?.minlength">
+                          * Venue should contain minimum 4 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="venue.errors?.required">
+                          * Venue is required!
+                        </span>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Purpose Description:
+                    </label></td>
+                  <td> <textarea name="description" autocomplete="off" class="form-control form-control1" #description="ngModel"
+                      minlength="4" maxlength="100" placeholder="Enter The Purpose Description"
+                      [(ngModel)]="editDescription" type="text" required>
+</textarea>
+                    <div [hidden]="description.pristine || description.valid" class="alert alert-danger m-1">
+                      <li><span *ngIf="description.errors?.minlength">
+                          * Description should contain minimum 4 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="description.errors?.maxlength">
+                          * Description should contain maximum 100 Chatracters!
+                        </span>
+                      </li>
+                      <li><span *ngIf="description.errors?.required">
+                          * Description is required!
+                        </span>
+                      </li>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td> <label class="text-monospace text-white">
+                      Participants:
+                    </label></td>
+                  <td>
+                    <select id="editParticipate" [(ngModel)]="editUser" name="editParticipate" class="form-control form-control1"
+                      required>
+                      <option *ngFor="let user of allUserList" [value]="user.userId+','+user.name">{{user.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer bg-dark">
+      <button class="btn btn-md text-white bg-danger" (click)="close()">Cancel</button>
+      <button class="btn btn-md text-white bg-success" type="button" (click)="updateScheduleMeeting(editId);close()"
+        [disabled]="!EditScheduleForm.valid">Update</button>
+    </div>
+  </ng-template>
+  <!--End Edit Content-->
+
+  <!-- Delete Content-->
+  <ng-template #deleteContent let-close="close">
+    <div class="modal-header bg-dark">
+      <h5 class="modal-title text-white">Delete Meeting</h5>
+      <button type="button" class="close text-white" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body bg-dark">
+      <h1 class="text-white" style="font-size:.72rem;">Are You Sure You Want To Delete This Meeting?</h1>
+      <br>
+      <p class="text-warning"><small>This Action Cannot Be Undone.</small></p>
+    </div>
+    <div class="modal-footer bg-dark">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">Cancel</button>
+      <button type="button" class="btn btn btn-danger" (click)="deleteScheduleMeeting(modalData?.event);close()">Delete</button>
+    </div>
+  </ng-template>
+  <!--End Delete Content-->
+
+  <!-- Notify Content-->
+  <ng-template #notifyContent let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Meeting Reminder</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h6 class="card-title">Your meeting <span><i> {{modalData?.event.title}} </i></span> will start soon!</h6>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success" (click)="close();snooze=true">Snooze</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="close();modalData?.event.status='Dismiss'">Dismiss</button>
+    </div>
+  </ng-template>
+  <!-- End Notify Content-->
+
+  <!-- User List-->
+  <div id="NormalUserList" class="row justify-content-md-center">
+    <!-- all list-->
+    <div class="col-md-6">
+      <!-- header-->
+      <div class="row">
+        <div class="col-12 text-center mx-auto ">
+          <div class="font-weight-bold" style="font-size: 1rem;">Select Anyone User To View There Schedule</div>
+        </div>
+      </div>
+      <!--End header-->
+
+      <div class="group">
+        <br>
+        <!-- Search button-->
+        <div class="row mt-1">
+          <div class="col mx-auto" style="max-width: 280px;">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control searchText" aria-label="Default" aria-describedby="inputGroup-sizing-default"
+                [(ngModel)]="search" placeholder="Search User in List.." (keydown)="sendUsingKeypress($event)">
+              <div class="input-group-prepend ">
+                <span class="input-group-text bg-success border-success text-center text-white" style="cursor: pointer;"
+                  (click)="sendKeyword()" id="inputGroup-sizing-default"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="feather feather-search">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--End Search button-->
+        <div id="all" *ngIf="allUserList.length>0">
+          <ul class="list-group mx-2" *ngFor="let user of allUserList ; let i = index">
+            <li class="list-group-item my-1 bg-success" (click)="userSelected(user.other);setClickedRow(i)"
+              [class.active]="i == selectedRow">
+              <div class="p-1" *ngIf="(user.name != receiverName)">
+                <app-user-details [userFullName]="user.name" [userStatus]="user.status"></app-user-details>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="row" *ngIf="!loadMore && allUserList.length>=0 && search.length<=0">
+          <div class="col-12 text-center">
+            <p>No More User Found</p>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+          <div class="font-weight-bold" style="font-size: 1.7rem;" *ngIf="allUserList.length<=0 && search.length>0"><span>Not
+              found</span></div>
+          <span *ngIf="loadingUser == true">Loading...</span>
+          <br>
+          <button *ngIf="loadingUser == false && loadMore && allUserList.length>=0" type="button" class="cursorPointer btn btn-success btn-sm text-center"
+            (click)="loadMoreUsers()">Load More</button>
+        </div>
+        <div class="row" *ngIf="allUserList.length<=0 && search.length<=0">
+          <div class="col-12 text-center">
+            <div class="info" style="font-size: 1.7rem;">You Don't Have User Yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End all list-->
+    <!-- selected user detail-->
+    <div class="col-md-6">
+      <!-- header-->
+      <div class="row">
+        <div class="col-12">
+          <div class="font-weight-bold ml-3" style="font-size: 1rem;">Selected User</div>
+        </div>
+      </div>
+      <!--End header-->
+      <div class="group bg">
+        <div class="row">
+          <div class="col-12 text-center mt-5" *ngIf="!selectedList">
+            <h5>Select Any One User</h5>
+          </div>
+        </div>
+        <div class="row" *ngIf="selectedList">
+          <div class="col-12 text-center">
+            <h3 class="mt-2">Profile Details</h3>
+            <table class="table table-striped table-bordered table-sm">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <td>{{displayFirstName + ' ' +displayLastName}}</td>
+                </tr>
+
+                <tr>
+                  <th>User Name</th>
+                  <td>{{displayUserName}}</td>
+                </tr>
+                <tr>
+                  <th>Email</th>
+                  <td>{{displayEmail}}</td>
+                </tr>
+                <tr>
+                  <th>Mobile</th>
+                  <td>{{displayMobileNumber}}</td>
+                </tr>
+                <tr>
+                  <th>Total Event</th>
+                  <td>{{displayTotalevent}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End selected user detail-->
+  </div>
+  <!-- End User List-->
+
+  <br>
+  <!-- calendar-header-->
+  <mwl-demo-utils-calendar-header [(view)]="view" [(viewDate)]="viewDate">
+  </mwl-demo-utils-calendar-header>
+  <!-- end calendar-header-->
+
+  <!--view switch-->
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-month-view>
+
+    <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-day-view>
+  </div>
+  <!--End view switch-->
+</div>

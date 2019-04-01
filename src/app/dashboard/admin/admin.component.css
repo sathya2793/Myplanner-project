@@ -1,0 +1,52 @@
+.top{
+    margin-top: 8vh;
+}
+h3 {
+    margin: 0 0 10px;
+  }
+
+  .page-conent{
+    background-color: burlywood
+  }
+.group{
+  min-height: 40vh;
+  max-height: 40vh;
+  top: 1vh;
+  bottom: 1vh;
+  left: 1vw;
+  right: 1vw;
+  overflow: scroll;
+  margin: 0;
+  padding: 0;
+  border: 5px solid #ccc;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+.bg{
+  background-color: #FBD28B;
+}
+.list-group-item{
+  border-bottom: 1px solid #D0DBE0;
+  padding: 10px 10px 7px 10px;
+}
+li{
+  cursor: pointer;
+}
+ #all ul li.active {
+  background-color:#FBD28B !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5cb85c; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.form-control1 {
+  width: 40vw !important;
+}

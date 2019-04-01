@@ -1,0 +1,50 @@
+.crop {
+    border-radius: 100%;
+    line-height: 1em;
+    padding: 1em;
+    text-align: center;
+    margin: 0em;
+    width: 3em;
+    height: 3em;
+    float: left;
+    text-transform: uppercase;
+    background-color: darkturquoise;
+    color: #fff;
+  }
+  
+  .about {
+    float: left;
+    padding-left: 0.4em;
+  }
+  
+  .online,
+  .offline,
+  .me,
+  .warning {
+    margin-right: 3px;
+    font-size: 0.8em;
+  }
+  
+  .online {
+    color: greenyellow;
+  }
+  
+  .offline {
+    color: red;
+  }
+  
+  .me {
+    color: #94C2ED;
+  }
+  
+  .warning {
+    color: #00c8e7;
+  }
+  
+  .status {
+    color: #92959E;
+  }
+  
+  .name {
+    float: left;
+  }

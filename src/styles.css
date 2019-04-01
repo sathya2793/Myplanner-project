@@ -1,0 +1,98 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+.cdk-overlay-container {
+  z-index: 9999999 !important;
+}
+
+/* table */
+.cal-month-view .cal-cell-row:hover {
+  background-color: transparent; }
+
+
+  table > *:first-child:not(thead) td:first-child {
+    font-weight: bold;
+  }
+
+:root {
+  --input-padding-x: 0.75rem;
+  --input-padding-y: 0.75rem;
+}
+
+html,
+body {
+  max-width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* form */
+
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442;
+}
+
+.alert {
+  color: red;
+}
+
+li {
+  list-style: none;
+}
+
+.form-control {
+  font-size: 16px;
+  transition: all 0.4s;
+  box-shadow: none;
+}
+
+input:focus {
+  outline: none !important;
+  border:3px solid #42A948 !important;
+}
+
+/* card */
+
+.card {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+.card a {
+  color: #5cb85c;
+}
+
+.card h2 {
+  font-size: 34px;
+  margin: 10px 0 15px;
+}
+
+.card .hint-text {
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.card .form-group {
+  margin-bottom: 20px;
+}
+
+.card .small {
+  font-size: 1rem;
+}
+
+/* button */
+
+.card .btn {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: bold;
+}
+
+.btn:hover:enabled {
+  transition:ease-in;
+}

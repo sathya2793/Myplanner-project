@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12  d-flex justify-content-center top">
+      <!-- form card signup -->
+      <div class="card bg-dark p-3 mx-auto top" style="width: 25rem;">
+        <h2 class="text-white text-center">Sign Up</h2>
+        <form #signupForm="ngForm" novalidate>
+          <span class="text-white px-3">First Name: </span>
+          <br>
+          <label for="firstName" class="sr-only">FirstName</label>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+              <input type="text" id="firstName" name="firstName" class="form-control" [pattern]="userPattern"
+                [(ngModel)]="firstName" #name="ngModel" autocomplete="off" placeholder="First Name" required minlength="4" autofocus
+                aria-label="firstName">
+            </div>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="name.invalid && (name.dirty || name.touched)">
+            <li><span *ngIf="name.errors.required">First Name is required.</span></li>
+            <li><span *ngIf="name.errors.minlength">First Name must be atleast 4 characters long.</span></li>
+            <li> <span *ngIf="name.errors.pattern">First Name should start with atleast 4 characters</span></li>
+          </div>
+          <span class="text-white px-3">Last Name:</span>
+          <br>
+          <label for="lastName" class="sr-only">LastName</label>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+              <input type="text" id="lastName" name="lastName" class="form-control" [pattern]="lastPattern" [(ngModel)]="lastName"
+                #lname="ngModel" placeholder="Last Name" autocomplete="off" required minlength="1" aria-label="lastName">
+            </div>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="lname.invalid && (lname.dirty || lname.touched)">
+            <li><span *ngIf="lname.errors.required">Last Name is required.</span></li>
+            <li> <span *ngIf="lname.errors.pattern">Last Name should be only characters</span></li>
+          </div>
+          <span class="text-white px-3">User Name:</span>
+          <br>
+          <label for="userName" class="sr-only">User Name</label>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+              <input type="text" id="userName" autocomplete="off" name="userName" class="form-control" [(ngModel)]="userName" #uname="ngModel"
+                placeholder="User Name ex:sri or sri-admin" required minlength="4" autofocus aria-label="User Name">
+            </div>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="uname.invalid && (uname.dirty || uname.touched)">
+            <li><span *ngIf="uname.errors.required">User Name is required.</span></li>
+            <li><span *ngIf="uname.errors.minlength">User Name must be atleast 4 characters long.</span></li>
+          </div>
+          <span class="text-white px-3">Country: </span>
+          <br>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+              <app-country-code (countryCodeEvent)="receiverCode($event)" (countryNameEvent)="receiverName($event)"></app-country-code>
+            </div>
+          </div>
+          <span class="text-white px-3">Mobile Number: </span>
+          <br>
+          <label for="mobileNumber" class="sr-only">mobileNumber</label>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+                <button type="button" id="code" class="btn btn-sm" style="background-color:#fff; color:black;" *ngIf="countryCode">+{{countryCode}}</button>
+              <input id="inputMobile" class="form-control" autocomplete="off" name="mobileNumber" [(ngModel)]="mobileNumber" #mobile="ngModel"
+                placeholder="Mobile number" required pattern="[0-9]*" minlength="10" maxlength="10" aria-label="Mobile Number">
+            </div>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="mobile.invalid && (mobile.dirty ||mobile.touched)">
+            <li> <span *ngIf="mobile.errors.required">Mobile number is required.</span></li>
+            <li> <span *ngIf="!mobile.errors.minlength && mobile.hasError('pattern')">Mobile number is not validate.</span></li>
+            <li> <span *ngIf="mobile.errors.minlength">Mobile number must be 10 digit.</span></li>
+          </div>
+          <span class="text-white px-3">Email: </span>
+          <br>
+          <label for="inputEmail" class="sr-only">Email</label>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+              <input type="email" id="inputEmail" class="form-control" autocomplete="off" name="email" [(ngModel)]="email" #mail="ngModel"
+                aria-label="email" placeholder="Email address" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+            </div>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="mail.invalid && (mail.dirty || mail.touched)">
+            <li><span *ngIf="mail.errors.required">Email address is required.</span></li>
+            <li><span *ngIf="mail.errors.pattern">Enter the valid Email address</span></li>
+          </div>
+          <span class="text-white px-3">Password:</span>
+          <br>
+          <label for="password" class="sr-only">password</label>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+              <input required type="password" id="password" class="form-control" name="password"
+                [(ngModel)]="passWord" aria-label="password" autocomplete="off" placeholder="Password" [pattern]="passwordPattern"
+                minlength="8" maxlength="30" #x="ngModel">
+            </div>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="x.invalid && (x.dirty || x.touched)">
+            <li><span *ngIf="x.errors.required">Password is required.</span></li>
+            <li><span *ngIf="x.errors.minlength">Password must be 8 characters long, we need another
+                {{x.errors.minlength.requiredLength - x.errors.minlength.actualLength}} characters </span></li>
+            <li><span *ngIf="x.errors.maxlength">Password must be less than 30 characters long.</span></li>
+            <li><span *ngIf="!x.errors.minlength && x.errors.pattern">First character must be a letter.</span></li>
+          </div>
+
+          <span class="text-white px-3">Confirm Password: </span>
+          <br>
+          <label for="confirmPassword" class="sr-only">confirmPassword</label>
+          <div class="form-group  px-3 py-1">
+            <div class="input-group">
+              <input name="confirmPassword" required type="password" class="form-control" placeholder="Confirm Password"
+                autocomplete="off" [(ngModel)]="confirmPassword" #y="ngModel">
+            </div>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="y.invalid && (y.dirty || y.touched)">
+            <li><span class="text-danger" *ngIf="y.errors.required">Confirm Password is required.</span></li>
+          </div>
+          <div class="alert alert-danger mx-2" *ngIf="(x.dirty && y.dirty)" [hidden]="(y.value===x.value)">
+            <li> <span class="text-danger">Pasword and Confirm Password is not matched</span></li>
+          </div>
+          <div class="form-group px-3  mt-1">
+            <button class="btn btn-lg btn-success btn-block signup-btn" type="button" [disabled]="!signupForm.form.valid"
+              (click)="signupFunction()">Sign
+              Up</button>
+          </div>
+          <div class="text-center text-white small p-1">Do you already have an account? <a style="text-decoration: underline;color:#5cb85c;cursor: pointer;"
+              (click)="goToSignIn()">Sign in</a></div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</div>

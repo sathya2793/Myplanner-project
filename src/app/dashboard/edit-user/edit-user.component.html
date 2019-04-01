@@ -1,0 +1,72 @@
+<app-nav-bar (messageEvent)="recieveMessage($event)"></app-nav-bar>
+<div class="page-conent" style="background-image: url(https://s3.ap-south-1.amazonaws.com/portfolio-cloud/assets/images/bg_3.png);" [ngStyle]="{ 'margin-left' : (showSidebar==true) ? '260px' : '0px'}">
+  <ngx-spinner
+bdColor = "rgba(51, 51, 51, 0.8)" size = "large" color = "#0de353" type = "square-jelly-box"
+></ngx-spinner>  
+  <div class="row mt-5 ">
+      <div class="col-md-12  d-flex justify-content-center">
+      <div class="card  p-3 mx-auto mt-3" style="width:25rem;background-image: url(https://s3.ap-south-1.amazonaws.com/portfolio-cloud/assets/images/bg_1.png);">
+        <h2 class="text-white text-center font-weight-bold">Editing User</h2>
+        <form #editUserForm="ngForm" novalidate>
+
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+              <input type="text" id="firstName" name="firstName" class="form-control" [pattern]="userPattern"
+                [(ngModel)]="firstName" #name="ngModel" placeholder="First Name" required minlength="4">
+            </div>
+          <div class="alert alert-danger mx-2" *ngIf="name.invalid && (name.dirty || name.touched)">
+              <li><span *ngIf="name.errors.required">First Name is required.</span></li>
+              <li><span *ngIf="name.errors.minlength">First Name must be atleast 4 characters long.</span></li>
+              <li> <span *ngIf="name.errors.pattern">First Name should start with atleast 4 characters</span></li>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+              <input type="text" id="lastName" name="lastName" class="form-control" [pattern]="lastPattern" [(ngModel)]="lastName"
+                #lname="ngModel" placeholder="Last Name" required minlength="1">
+            </div>
+          <div class="alert alert-danger mx-2" *ngIf="lname.invalid && (lname.dirty || lname.touched)">
+            <li><span *ngIf="lname.errors.required">Last Name is required.</span></li>
+            <li> <span *ngIf="lname.errors.pattern">Last Name should be only characters</span></li>
+          </div>
+
+          <div class="form-group">
+            <label for="userName">User Name:</label>
+          <input type="text" id="inputUserName" class="form-control" name="userName" [(ngModel)]="userName"
+            placeholder="User Name" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email address:</label>
+          <input type="email" id="inputEmail" class="form-control" name="email" [(ngModel)]="email"
+            placeholder="Email address" readonly>
+        </div>
+        
+            <div class="form-group">
+                <label for="Country">Country:</label>
+              <app-country-code [country_Name]="country_Name" (countryCodeEvent)="receiverCode($event)" (countryNameEvent)="receiverName($event)"></app-country-code>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobileNumber">Mobile number:</label>
+              <div class="flexContainer">
+                <i class="p-1" style="background-color:#fff; color:black;" *ngIf="countryCode">+{{countryCode}}</i>
+                <input id="inputMobile" class="form-control inputField" name="mobileNumber" [(ngModel)]="mobileNumber"
+                  #mobile="ngModel" placeholder="Mobile number" required [pattern]="mobilePattern" minlength="10"
+                  maxlength="20">
+              </div>
+            </div>
+        <div class="alert alert-danger mx-2" *ngIf="mobile.invalid && (mobile.dirty ||mobile.touched)">
+          <li> <span *ngIf="mobile.errors.required">Mobile number is required.</span></li>
+          <li> <span *ngIf="!mobile.errors.minlength && mobile.errors.pattern">Mobile number is not validate.</span></li>
+          <li> <span *ngIf="mobile.errors.minlength">Mobile number must be 10 digit.</span></li>
+        </div>
+      </form>
+        <div class="row">
+          <div class="col-xs-12 col-md-6"></div>
+          <div class="col-xs-12 col-md-6"><button class="btn btn-success text-white btn-block btn-lg" [disabled]="!editUserForm.form.valid"
+            (click)="editUserFunction()">Save</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
